@@ -13,9 +13,11 @@ For assistance:
 Global Variables
 **********************/
 const divPage = document.querySelector(".page");
+const link = document.querySelector(".link-list");
 let page = 1;
 const itemsPerPage = 9;
-const studentList = document.getElementsByClassName("student-item cf");
+const studentList = document.querySelector(".student-list");
+const studentItemList = document.getElementsByClassName("student-item cf");
 const paginationButtons = document.getElementsByTagName("a");
 
 /*
@@ -31,7 +33,6 @@ function showPage(list, page) {
   let endIndex = page * itemsPerPage;
 
   for (let i = 0; i < list.length; i++) {
-    //studentList[i].style.display = 'block';
     if (i >= startIndex && i < endIndex) {
       list[i].style.display = "block";
     } else {
@@ -47,40 +48,26 @@ This function will create and insert/append the elements needed for the paginati
 
 function addPagination(list) {
   //provides amount of pages needed to display a max of 9 students per page
-  const pageCount = Math.ceil(studentList.length / itemsPerPage);
-  const pageDiv = document.createElement("div");
-  pageDiv.className = "pagination";
-  divPage.appendChild(pageDiv);
-  const ul = document.createElement("ul");
-  ul.className = "link-list";
-  pageDiv.appendChild(ul);
+  const pageCount = Math.ceil(list.length / itemsPerPage);
 
-  for (let i = 1; i <= pageCount; i += 1) {
-    const li = document.createElement("li");
+  for (let i = 1; i <= pageCount; i++) {
+    let pageLink = `<li><button type="button">${i}</button></li>`;
+    link.insertAdjacentHTML("beforeend", pageLink);
 
-    li.innerHTML = `<a href="#">${i}</a>`;
-    li.addEventListener("click", (e) => {
-      let previousButton = document.querySelectorAll(".pagination a");
-      previousButton.className = "";
-      selectedButton = e.target.textContent;
-      e.target.className = "active";
-      showPage(studentList, selectedButton);
+    link.querySelectorAll("button")[0].className = "active";
+
+    link.addEventListener("click", (e) => {
+      if (e.target.tagName === "BUTTON") {
+        link.querySelector(".active").className = "";
+
+        e.target.className = "active";
+
+        showPage(list, e.target.textContent);
+      }
     });
-
-    ul.appendChild(li);
-  }
-  pageDiv.appendChild(ul);
-  return pageDiv;
-
-  function removeActiveClass() {
-    let links = document.querySelectorAll(".active");
-
-    for (let link of links) {
-      link.classList.remove("active");
-    }
   }
 }
 
 // Call functions
-showPage(studentList, 1);
-addPagination(studentList);
+showPage(studentItemList, 1);
+addPagination(studentItemList);
