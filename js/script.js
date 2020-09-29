@@ -12,13 +12,14 @@ For assistance:
 /**********************
 Global Variables
 **********************/
+const header = document.querySelector(".header");
 const divPage = document.querySelector(".page");
 const link = document.querySelector(".link-list");
 let page = 1;
 const itemsPerPage = 9;
 const studentList = document.querySelector(".student-list");
-const studentItemList = document.getElementsByClassName("student-item cf");
-const paginationButtons = document.getElementsByTagName("a");
+
+//const studentItemList = document.getElementsByClassName("student-item cf");
 
 /*
 Create the `showPage` function
@@ -29,14 +30,30 @@ function showPage(list, page) {
   // list → represents student data that will be passed as an argument when showPage is called
   // page → represents the page number that will be passed as an argument when the showPage is called
 
+  //clear html before inserting new HTML elements
+  studentList.innerHTML = "";
+
+  //insert student HTML elements
   let startIndex = page * itemsPerPage - itemsPerPage;
   let endIndex = page * itemsPerPage;
 
-  for (let i = 0; i < list.length; i++) {
+  for (let i = startIndex; i < endIndex; i++) {
     if (i >= startIndex && i < endIndex) {
-      list[i].style.display = "block";
-    } else {
-      list[i].style.display = "none";
+      let student = list[i];
+
+      let html = `
+         <li class="student-item cf">
+         <div class="student-details">
+           <img class="avatar" src="${student.picture.large}" alt="Profile Picture">
+           <h3>${student.name.title} ${student.name.first} ${student.name.last}</h3>
+           <span class="email">${student.email}</span>
+         </div>
+         <div class="joined-details">
+           <span class="date">Joined ${student.registered.date}</span>
+         </div>
+       </li>`;
+
+      studentList.insertAdjacentHTML("beforeend", html);
     }
   }
 }
@@ -69,5 +86,5 @@ function addPagination(list) {
 }
 
 // Call functions
-showPage(studentItemList, 1);
-addPagination(studentItemList);
+showPage(data, 1);
+addPagination(data);
