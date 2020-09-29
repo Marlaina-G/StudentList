@@ -10,6 +10,12 @@ For assistance:
 */
 
 /**********************
+ 
+I am looking to 'Meet Expectations'
+
+**********************/
+
+/**********************
 Global Variables
 **********************/
 const header = document.querySelector(".header");
